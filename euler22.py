@@ -1,36 +1,27 @@
 from nltk.tokenize import RegexpTokenizer
 from collections import Counter
 
+# Opens the file and reads it in
 infile = open('names.txt', 'r')
 names = infile.read()
 
+#regex it to death
 tokenizer = RegexpTokenizer(r'\w+')
-# tokens = tokenizer.tokenize(names)
 tokens = tokenizer.tokenize(names)
-
 tokens.sort()
-
-total = 0
-count = 1
 
 # setup the value dictionary
 values = dict()
+for x in xrange(ord('A'), ord('Z') + 1):
+	values[chr(x)] = x - ord('A') + 1
 
-for x in xrange(0,26):
-	values[chr(ord('A') + x)] = x + 1
-
-for word in tokens:
-	thisRun = 0
+#points
+total = 0
+for idx, word in enumerate(tokens, start=1):
+	thisName = 0
 	for x in word:
-		thisRun = thisRun + values[x]
-	thisRun = thisRun * count
-	print word, thisRun
-	total = total + thisRun
-	count = count + 1
+		thisName = thisName + values[x]
+	thisName = thisName * idx
+	total = total + thisName
 
-print total
-
-# for word in tokens:
-# 	print word
-
-# print filter(lambda word: word not in ',-', tokens)
+print 'The total score is', total
